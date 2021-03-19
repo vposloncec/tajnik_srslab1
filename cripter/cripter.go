@@ -4,9 +4,20 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
-    "golang.org/x/crypto/bcrypt"
+	"golang.org/x/crypto/sha3"
 	"io"
 )
+
+// create 32bit long key from passphrase
+func createKey(passphrase string) ([]byte, error){
+	hasher := sha3.New224()
+	if _, err := hasher.Write([]byte(passphrase)); err != nil{
+		return nil, err
+	}
+	r := hasher.Sum(nil)[:32]
+	//fmt.Println("Calculated key: ", r)
+	return r, nil
+}
 
 func Encrypt(in []byte, passphrase string) ([]byte, error){
 	aesgcm, err := newAesGCM(passphrase)
@@ -17,7 +28,8 @@ func Encrypt(in []byte, passphrase string) ([]byte, error){
 	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
 		return nil, err
 	}
-	return aesgcm.Seal(nonce, nonce, in, nil), nil
+	b, err := aesgcm.Seal(nonce, nonce, in, nil), nil
+	return b, err
 }
 
 func Decrypt(in []byte, passphrase string)([]byte, error){
@@ -33,7 +45,7 @@ func Decrypt(in []byte, passphrase string)([]byte, error){
 }
 
 func newAesGCM(passphrase string) (cipher.AEAD, error){
-	ckey, err := bcrypt.GenerateFromPassword([]byte(passphrase), 15)
+	ckey, err := createKey(passphrase)
 	if err != nil {
 		return nil, err
 	}
