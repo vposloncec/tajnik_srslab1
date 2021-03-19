@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"fmt"
+	"io/fs"
+	"os"
+	"path/filepath"
 
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -16,6 +17,7 @@ var (
 	rootCmd = &cobra.Command{
 		Use:   "tajnik",
 		Short: "Simple password (credentials) manager",
+		Version: "0.0.1",
 	}
 )
 
@@ -25,32 +27,14 @@ func Execute() error {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
-
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.config/tajnik.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "mfile", "", "Master file where data is stored(default is $HOME/.config/tajnik.yaml)")
 	viper.SetDefault("author", "Viktor Posloncec <viktor.posloncec@fer.hr>")
 	viper.SetDefault("license", "MIT")
+	viper.SetDefault("master_file", "$HOME/.tajnik/master_file")
 
-}
-
-func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		cobra.CheckErr(err)
-
-		// Search config in home directory with name ".cobra" (without extension).
-		viper.AddConfigPath(home + "/.config")
-		viper.AddConfigPath(home)
-		viper.SetConfigName("cobra")
+	master_file_path := viper.GetString("master_file")
+	if _, err := os.Stat(master_file_path); os.IsNotExist(err) {
+	    os.Mkdir(filepath.Dir(master_file_path), fs.ModeDir)
 	}
 
-	viper.AutomaticEnv()
-
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
 }
