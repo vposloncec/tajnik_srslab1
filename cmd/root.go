@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	"io/fs"
+	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -30,11 +31,20 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "mfile", "", "Master file where data is stored(default is $HOME/.config/tajnik.yaml)")
 	viper.SetDefault("author", "Viktor Posloncec <viktor.posloncec@fer.hr>")
 	viper.SetDefault("license", "MIT")
-	viper.SetDefault("master_file", "$HOME/.tajnik/master_file")
 
-	master_file_path := viper.GetString("master_file")
-	if _, err := os.Stat(master_file_path); os.IsNotExist(err) {
-	    os.Mkdir(filepath.Dir(master_file_path), fs.ModeDir)
+	// Create .tajnik directory if it does not exist
+	home, err := os.UserHomeDir()
+	if err != nil{
+		log.Fatalln(err)
 	}
+	appHomeDir := filepath.Join(home, ".tajnik")
+	if _, err := os.Stat(appHomeDir); os.IsNotExist(err) {
+	    err := os.Mkdir(appHomeDir, 0755)
+	    if err != nil{
+	    	log.Fatalln(err)
+		}
+	    fmt.Println("Application root directory not found, created", filepath.Dir(appHomeDir))
+	}
+	viper.SetDefault("master_file", filepath.Join(appHomeDir,"master_file"))
 
 }
