@@ -2,5 +2,8 @@
 tajnik
 lab1-srs
 
+# dont exclude tajnik module
+!tajnik/
+
 # Not benefitial
 .idea
