@@ -18,7 +18,7 @@ var (
 	rootCmd = &cobra.Command{
 		Use:     "tajnik",
 		Short:   "Simple password (credentials) manager",
-		Version: "0.0.1",
+		Version: "0.2.3",
 	}
 )
 
@@ -28,7 +28,7 @@ func Execute() error {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "mfile", "", "Master file where data is stored(default is $HOME/.config/tajnik.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "mfile", "", "Master file where data is stored(default is $HOME/.tajnik/master_file)")
 	viper.SetDefault("author", "Viktor Posloncec <viktor.posloncec@fer.hr>")
 	viper.SetDefault("license", "MIT")
 
