@@ -37,14 +37,14 @@ func init() {
 	if err != nil{
 		log.Fatalln(err)
 	}
-	appHomeDir := filepath.Join(home, ".tajnik")
-	if _, err := os.Stat(appHomeDir); os.IsNotExist(err) {
-	    err := os.Mkdir(appHomeDir, 0755)
+	appHome := filepath.Join(home, ".tajnik")
+	if _, err := os.Stat(appHome); os.IsNotExist(err) {
+	    err := os.Mkdir(appHome, 0755)
 	    if err != nil{
 	    	log.Fatalln(err)
 		}
-	    fmt.Println("Application root directory not found, created", filepath.Dir(appHomeDir))
+	    fmt.Println("Application root directory not found, created", appHome)
 	}
-	viper.SetDefault("master_file", filepath.Join(appHomeDir,"master_file"))
+	viper.SetDefault("master_file", filepath.Join(appHome,"master_file"))
 
 }
