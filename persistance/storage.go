@@ -3,16 +3,17 @@ package persistance
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/vposloncec/lab1-srs/cripter"
 	"io"
 	"io/ioutil"
+
+	"github.com/vposloncec/lab1-srs/cripter"
 )
 
 type Storage map[string]string
 
-func LoadDecrypt(passphrase string, r io.Reader) (Storage, error){
+func LoadDecrypt(passphrase string, r io.Reader) (Storage, error) {
 	s := Storage{}
-	if err := s.LoadDecrypt(passphrase, r); err != nil{
+	if err := s.LoadDecrypt(passphrase, r); err != nil {
 		return nil, err
 	}
 	return s, nil
@@ -45,7 +46,7 @@ func (s *Storage) SaveEncrypt(passphrase string, w io.Writer) error {
 		return err
 	}
 
-	if _, err := w.Write(bCipher); err != nil{
+	if _, err := w.Write(bCipher); err != nil {
 		return err
 	}
 	return nil

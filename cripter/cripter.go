@@ -4,13 +4,14 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"io"
+
 	"golang.org/x/crypto/pbkdf2"
 	"golang.org/x/crypto/sha3"
-	"io"
 )
 
 // create 32bit long key from passphrase
-func createKey(passphrase string) []byte{
+func createKey(passphrase string) []byte {
 	return pbkdf2.Key([]byte(passphrase),
 		[]byte("Ča Je Život Vengo Fantažija"),
 		4096,
@@ -18,7 +19,7 @@ func createKey(passphrase string) []byte{
 		sha3.New224)
 }
 
-func Encrypt(in []byte, passphrase string) ([]byte, error){
+func Encrypt(in []byte, passphrase string) ([]byte, error) {
 	aesgcm, err := newAesGCM(passphrase)
 	if err != nil {
 		return nil, err
@@ -31,7 +32,7 @@ func Encrypt(in []byte, passphrase string) ([]byte, error){
 	return b, err
 }
 
-func Decrypt(in []byte, passphrase string)([]byte, error){
+func Decrypt(in []byte, passphrase string) ([]byte, error) {
 	aesgcm, err := newAesGCM(passphrase)
 	if err != nil {
 		return nil, err
@@ -43,7 +44,7 @@ func Decrypt(in []byte, passphrase string)([]byte, error){
 	return aesgcm.Open(nil, nonce, ciphertext, nil)
 }
 
-func newAesGCM(passphrase string) (cipher.AEAD, error){
+func newAesGCM(passphrase string) (cipher.AEAD, error) {
 	ckey := createKey(passphrase)
 	c, err := aes.NewCipher(ckey)
 	if err != nil {

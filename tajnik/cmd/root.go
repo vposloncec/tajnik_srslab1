@@ -16,8 +16,8 @@ var (
 	userLicense string
 
 	rootCmd = &cobra.Command{
-		Use:   "tajnik",
-		Short: "Simple password (credentials) manager",
+		Use:     "tajnik",
+		Short:   "Simple password (credentials) manager",
 		Version: "0.0.1",
 	}
 )
@@ -34,17 +34,17 @@ func init() {
 
 	// Create .tajnik directory if it does not exist
 	home, err := os.UserHomeDir()
-	if err != nil{
+	if err != nil {
 		log.Fatalln(err)
 	}
 	appHome := filepath.Join(home, ".tajnik")
 	if _, err := os.Stat(appHome); os.IsNotExist(err) {
-	    err := os.Mkdir(appHome, 0755)
-	    if err != nil{
-	    	log.Fatalln(err)
+		err := os.Mkdir(appHome, 0755)
+		if err != nil {
+			log.Fatalln(err)
 		}
-	    fmt.Println("Application root directory not found, created", appHome)
+		fmt.Println("Application root directory not found, created", appHome)
 	}
-	viper.SetDefault("master_file", filepath.Join(appHome,"master_file"))
+	viper.SetDefault("master_file", filepath.Join(appHome, "master_file"))
 
 }
