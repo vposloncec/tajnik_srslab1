@@ -34,6 +34,22 @@ this will create an executable in `./bin` folder
 
 
 ## Documentation
-```shell
-tajnik --help
+`tajnik help`
+```
+Simple password (credentials) manager
+
+Usage:
+  tajnik [command]
+
+Available Commands:
+  get         Get credentials for desired address
+  help        Help about any command
+  init        Initializes tajnik using the provided master password
+  put         Put (add) password to the manager's database
+
+Flags:
+  -h, --help           help for tajnik
+      --mfile string   Master file where data is stored(default is $HOME/.tajnik/master_file)
+
+Use "tajnik [command] --help" for more information about a command.
 ```
