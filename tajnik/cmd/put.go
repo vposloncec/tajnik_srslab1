@@ -32,7 +32,7 @@ Password for that address can later be queried using the get command.`,
 		}
 		mf.Close()
 
-		data[args[1]] = args[2]
+		data[args[1]] = persistance.PassWithPadding(args[2])
 
 		mf, err = os.OpenFile(mfPath, os.O_WRONLY|os.O_TRUNC, 0644)
 		if err != nil {

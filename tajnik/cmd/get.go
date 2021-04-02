@@ -29,11 +29,11 @@ var getCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalln(err)
 		}
-		entry, ok := data[args[1]]
+		password, ok := data[args[1]]
 		if !ok {
 			fmt.Println("No passwords found for desired address: ", args[1])
 			return
 		}
-		fmt.Println(entry)
+		fmt.Println(password.Get())
 	},
 }

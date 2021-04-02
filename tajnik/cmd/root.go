@@ -18,7 +18,7 @@ var (
 	rootCmd = &cobra.Command{
 		Use:     "tajnik",
 		Short:   "Simple password (credentials) manager",
-		Version: "0.2.3",
+		Version: "0.3.0",
 	}
 )
 

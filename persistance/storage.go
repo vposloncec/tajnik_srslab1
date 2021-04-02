@@ -9,7 +9,7 @@ import (
 	"github.com/vposloncec/lab1-srs/cripter"
 )
 
-type Storage map[string]string
+type Storage map[string]PasswordContainer
 
 func LoadDecrypt(passphrase string, r io.Reader) (Storage, error) {
 	s := Storage{}
